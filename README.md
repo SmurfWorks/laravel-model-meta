@@ -1,93 +1,48 @@
-# :package_description
+# Dynamically configure and capture strictly-typed metadata for your Laravel models as fluent attributes
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/:vendor_slug/:package_slug.svg?style=flat-square)](https://packagist.org/packages/:vendor_slug/:package_slug)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/:vendor_slug/:package_slug/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/:vendor_slug/:package_slug/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/:vendor_slug/:package_slug/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/:vendor_slug/:package_slug/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/:vendor_slug/:package_slug.svg?style=flat-square)](https://packagist.org/packages/:vendor_slug/:package_slug)
-<!--delete-->
----
-This repo can be used to scaffold a Laravel package. Follow these steps to get started:
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/smurfworks/laravel-model-meta.svg?style=flat-square)](https://packagist.org/packages/smurfworks/laravel-model-meta)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/smurfworks/laravel-model-meta/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/smurfworks/laravel-model-meta/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/smurfworks/laravel-model-meta/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/smurfworks/laravel-model-meta/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
+[![Total Downloads](https://img.shields.io/packagist/dt/smurfworks/laravel-model-meta.svg?style=flat-square)](https://packagist.org/packages/smurfworks/laravel-model-meta)
 
-1. Press the "Use this template" button at the top of this repo to create a new repo with the contents of this skeleton.
-2. Run "php ./configure.php" to run a script that will replace all placeholders throughout all the files.
-3. Have fun creating your package.
-4. If you need help creating a package, consider picking up our <a href="https://laravelpackage.training">Laravel Package Training</a> video course.
----
-<!--/delete-->
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+"Laravel Model Meta" allows you to capture strictly typed field values for a model without having to alter a database schema.
 
-## Support us
+What separates this package from other meta packages available? A combination of the following:
 
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/:package_name.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/:package_name)
+- **Quick to implement with low domain impact:** This package will create only one meta table, regardless of the number of models you wish to store meta for and use a polymorphic relation.
+- **Queryable data:** This package does not use JSON to serialize a model's meta, and instead the meta values are stored in separate database fields depending on the configured meta key's storage type, allowing for database querying using type-dependent operators and indexing.
+- **Strict typing and content management:** The available meta keys are stored in their own database table, allowing for easy configuration via the command line, migration or your own custom GUI.
+- **Reduced query load:** Available meta fields are cached using an index created from the available meta key table after changes - no unnecessary database queries and no schema column listing queries.
+- **Compatible with your project flow:** Seeder helpers for importing meta keys from the standard Laravel seeding command, useful for project setup or keeping migrations ephemeral. Otherwise, register your model keys manually via the command line.
+- **Along for the ride:** Transform meta values from one type to another, or move them to a new schema field once validated as required by your domain.
+- **Database driver agnostic:** The package allows you to disable certain meta value types if your database driver doesn't support them, or you simply don't want them in the schema, so it won't create the columns when running migrations.
 
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
+**To save you time, you should know that to use this package, the Primary keys of your models with metadata values must be incremental** - UUID relations are not currently supported. To solve this, you could alter the migrations and create your own class. 
 
 ## Installation
 
-You can install the package via composer:
-
-```bash
-composer require :vendor_slug/:package_slug
-```
-
-You can publish and run the migrations with:
-
-```bash
-php artisan vendor:publish --tag=":package_slug-migrations"
-php artisan migrate
-```
-
-You can publish the config file with:
-
-```bash
-php artisan vendor:publish --tag=":package_slug-config"
-```
-
-This is the contents of the published config file:
-
-```php
-return [
-];
-```
-
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag=":package_slug-views"
-```
+Please see [INSTALL](readme/INSTALL.md) for more information on how to install the package.
 
 ## Usage
 
-```php
-$variable = new VendorName\Skeleton();
-echo $variable->echoPhrase('Hello, VendorName!');
-```
+Please see [USAGE](readme/USAGE.md) for more information on how to use the package.
 
-## Testing
+## Configuration
 
-```bash
-composer test
-```
+Please see [CONFIGURATION](readme/CONFIGURATION.md) for more information on how to configure the package.
+
+## Advanced details
+
+For more information about some of the key design decisions and implementation details, please see [ADVANCED](readme/ADVANCED.md).
 
 ## Changelog
 
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
+Please see [CHANGELOG](readme/CHANGELOG.md) for more information on what has changed recently.
 
-## Contributing
+## Contributing and Security Vulnerabilities
 
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
-
-## Security Vulnerabilities
-
-Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
-
-## Credits
-
-- [:author_name](https://github.com/:author_username)
-- [All Contributors](../../contributors)
+Please see [CONTRIBUTING](readme/CONTRIBUTING.md) for details.
 
 ## License
 
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+The MIT License (MIT). Please see [License File](readme/LICENSE.md) for more information.

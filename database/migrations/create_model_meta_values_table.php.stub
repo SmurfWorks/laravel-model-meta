@@ -1,0 +1,87 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+use SmurfWorks\ModelMeta\ModelMeta;
+
+return new class extends Migration
+{
+    public function up()
+    {
+        $types = ModelMeta::storedValueTypes();
+
+        Schema::create(config('model-meta.tables.values', 'model_meta_values'), function (Blueprint $table) use ($types) {
+            $table->id();
+            $table->morphs('model');
+            $table->string('key');
+            $table->enum('value_stored_as', $types);
+
+            if (in_array(ModelMeta::TYPE_STRING, $types)) {
+                $table->string('string')->nullable();
+            }
+
+            if (in_array(ModelMeta::TYPE_TEXT, $types)) {
+                $table->text('text')->nullable();
+            }
+
+            if (in_array(ModelMeta::TYPE_FULLTEXT, $types)) {
+                $table->text('fulltext')->nullable();
+                $table->fullText('fulltext');
+            }
+
+            if (in_array(ModelMeta::TYPE_INTEGER, $types)) {
+                $table->integer('integer')->nullable();
+            }
+
+            if (in_array(ModelMeta::TYPE_FLOAT, $types)) {
+                $table->float('float')->nullable();
+            }
+
+            if (in_array(ModelMeta::TYPE_BOOLEAN, $types)) {
+                $table->boolean('boolean')->nullable();
+            }
+
+            if (in_array(ModelMeta::TYPE_JSON, $types)) {
+                $table->json('json')->nullable();
+            }
+
+            if (in_array(ModelMeta::TYPE_JSONB, $types)) {
+                $table->json('jsonb')->nullable();
+            }
+
+            if (in_array(ModelMeta::TYPE_DATE, $types)) {
+                $table->date('date')->nullable();
+            }
+
+            if (in_array(ModelMeta::TYPE_TIME, $types)) {
+                $table->time('time')->nullable();
+            }
+
+            if (in_array(ModelMeta::TYPE_DATETIME, $types)) {
+                $table->dateTime('datetime')->nullable();
+            }
+
+            if (in_array(ModelMeta::TYPE_TIMESTAMP, $types)) {
+                $table->timestamp('timestamp')->nullable();
+            }
+
+            $table->timestamps();
+            $table->softDeletes();
+
+            $table->foreign('key', sprintf('%s_key', config('model-meta.tables.values')))
+                ->references('key')
+                ->on(config('model-meta.tables.keys'))
+                ->onDelete('cascade');
+
+
+            $table->unique('key');
+            $table->index(['model_type', 'model_id', 'key']);
+        });
+    }
+
+    public function down()
+    {
+        Schema::dropIfExists(config('model-meta.tables.values'));
+    }
+};

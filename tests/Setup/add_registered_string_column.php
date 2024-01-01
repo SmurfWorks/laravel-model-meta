@@ -8,12 +8,13 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('migration_table_name_table', function (Blueprint $table) {
-            $table->id();
-
-            // add fields
-
-            $table->timestamps();
+        Schema::table('dummy_models', function (Blueprint $table) {
+            $table->string('registered_string')->nullable();
         });
+    }
+
+    public function down()
+    {
+        Schema::dropIfExists('dummy_models');
     }
 };
