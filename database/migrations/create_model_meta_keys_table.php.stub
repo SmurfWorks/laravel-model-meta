@@ -24,6 +24,6 @@ return new class extends Migration
 
     public function down()
     {
-        Schema::dropIfExists(config('model-meta.tables.keys'));
+        Schema::dropIfExists(config('model-meta.tables.keys', 'model_meta_keys'));
     }
 };

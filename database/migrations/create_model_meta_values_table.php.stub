@@ -69,9 +69,9 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('key', sprintf('%s_key', config('model-meta.tables.values')))
+            $table->foreign('key', sprintf('%s_key', config('model-meta.tables.values', 'model_meta_values')))
                 ->references('key')
-                ->on(config('model-meta.tables.keys'))
+                ->on(config('model-meta.tables.keys', 'model_meta_keys'))
                 ->onDelete('cascade');
 
 

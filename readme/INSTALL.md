@@ -6,17 +6,13 @@ You can install the package via composer:
 composer require smurfworks/laravel-model-meta
 ```
 
-You need to publish the migrations with:
+You need to publish the migrations and configuration with:
 
 ```bash
-php artisan vendor:publish --tag="laravel-model-meta-migrations"
+php artisan vendor:publish --provider="SmurfWorks\ModelMeta\ModelMetaServiceProvider"
 ```
 
 It's recommended you review the [configuration](./CONFIGURATION.md) and change any defaults. You may publish the config file with:
-
-```bash
-php artisan vendor:publish --tag="laravel-model-meta-config"
-```
 
 After confirming the configuration, you can run the migrations:
 

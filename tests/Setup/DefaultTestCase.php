@@ -39,6 +39,7 @@ class DefaultTestCase extends Orchestra
 
         config()->set('model-meta.model-namespace', ['SmurfWorks\ModelMeta\Tests\Models']);
         config()->set('database.default', 'testing');
+        config()->set('database.connections.testing.foreign_key_constraints', true);
 
         $keysMigration = include __DIR__.'/../../database/migrations/create_model_meta_keys_table.php.stub';
         $keysMigration->up();
