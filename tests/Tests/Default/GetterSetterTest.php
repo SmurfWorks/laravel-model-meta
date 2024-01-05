@@ -167,11 +167,26 @@ it('can assign registered datetime values', function () {
 });
 
 it('can set a default datetime', function () {
-    ModelMetaKey::firstWhere('key', 'dummy_models:registered_datetime')->update(['default_value' => now()]);
+    ModelMetaKey::firstWhere('key', 'dummy_models:registered_datetime')->update([
+        'default_value' => \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', '2010-02-01 13:35:20', 'UTC')
+    ]);
     \SmurfWorks\ModelMeta\ModelMeta::clearSchemaCache(DummyModel::class);
 
     $record = DummyModel::first();
     expect($record->registered_datetime instanceof \Carbon\Carbon)->toBeTrue();
+    expect($record->registered_datetime->format('Y-m-d H:i:s'))->toBe('2010-02-01 13:35:20');
+});
+
+it('will respective defaults with timezone', function () {
+    ModelMetaKey::firstWhere('key', 'dummy_models:registered_datetime')->update([
+        'default_value' => \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', '2010-02-01 13:35:20', 'Pacific/Auckland')
+    ]);
+    \SmurfWorks\ModelMeta\ModelMeta::clearSchemaCache(DummyModel::class);
+
+    $record = DummyModel::first();
+    expect($record->registered_datetime instanceof \Carbon\Carbon)->toBeTrue();
+    expect($record->registered_datetime->format('Y-m-d H:i:s'))->toBe('2010-02-01 13:35:20');
+    expect($record->registered_datetime->getTimezone()->getName())->toBe('Pacific/Auckland');
 });
 
 /* TIMESTAMP */
@@ -189,11 +204,15 @@ it('can assign registered timestamp values', function () {
 });
 
 it('can set a default timestamp', function () {
-    ModelMetaKey::firstWhere('key', 'dummy_models:registered_timestamp')->update(['default_value' => now()]);
+    ModelMetaKey::firstWhere('key', 'dummy_models:registered_timestamp')->update([
+        'default_value' => \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', '2010-02-01 13:35:20', 'UTC')
+    ]);
+
     \SmurfWorks\ModelMeta\ModelMeta::clearSchemaCache(DummyModel::class);
 
     $record = DummyModel::first();
-    expect(is_int($record->registered_timestamp))->toBeTrue();
+    expect($record->registered_timestamp instanceof \Carbon\Carbon)->toBeTrue();
+    expect($record->registered_timestamp->format('Y-m-d H:i:s'))->toBe('2010-02-01 13:35:20');
 });
 
 /* JSON */

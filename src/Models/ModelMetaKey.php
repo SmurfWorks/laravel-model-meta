@@ -57,12 +57,27 @@ class ModelMetaKey extends \Illuminate\Database\Eloquent\Model
     public function defaultValue(): Attribute
     {
         return Attribute::make(
-            fn ($value) => ! is_null($value) ? unserialize($value) : null,
+            function ($value) {
+                if ($value === null) return null;
+                $value = unserialize($value);
+
+                switch ($this->attributes['store_value_as']) {
+                    case ModelMeta::TYPE_DATETIME:
+                    case ModelMeta::TYPE_TIMESTAMP:
+                        if (is_array($value)) {
+                            $value = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $value['value'], $value['tz']);
+                            break;
+                        }
+
+                        $value = $this->asDateTime($value);
+                        break;
+                }
+
+                return $value;
+            },
             function ($value) {
 
-                if ($value === '' || $value === null) {
-                    return null;
-                }
+                if ($value === '' || $value === null) return null;
 
                 switch ($this->attributes['store_value_as']) {
                     case ModelMeta::TYPE_STRING:
@@ -92,11 +107,17 @@ class ModelMetaKey extends \Illuminate\Database\Eloquent\Model
                         break;
 
                     case ModelMeta::TYPE_DATETIME:
-                        $value = $this->asDateTime($value);
-                        break;
-
                     case ModelMeta::TYPE_TIMESTAMP:
-                        $value = $this->asTimestamp($value);
+                        if ($value instanceof \Carbon\Carbon) {
+                            $value = [
+                                'tz' => $value->getTimezone(),
+                                'value' => (string) $value
+                            ];
+
+                            break;
+                        }
+
+                        $value = (string) $value;
                         break;
                 }
 
