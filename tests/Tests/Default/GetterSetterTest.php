@@ -168,7 +168,7 @@ it('can assign registered datetime values', function () {
 
 it('can set a default datetime', function () {
     ModelMetaKey::firstWhere('key', 'dummy_models:registered_datetime')->update([
-        'default_value' => \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', '2010-02-01 13:35:20', 'UTC')
+        'default_value' => \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', '2010-02-01 13:35:20', 'UTC'),
     ]);
     \SmurfWorks\ModelMeta\ModelMeta::clearSchemaCache(DummyModel::class);
 
@@ -179,7 +179,7 @@ it('can set a default datetime', function () {
 
 it('will respective defaults with timezone', function () {
     ModelMetaKey::firstWhere('key', 'dummy_models:registered_datetime')->update([
-        'default_value' => \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', '2010-02-01 13:35:20', 'Pacific/Auckland')
+        'default_value' => \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', '2010-02-01 13:35:20', 'Pacific/Auckland'),
     ]);
     \SmurfWorks\ModelMeta\ModelMeta::clearSchemaCache(DummyModel::class);
 
@@ -205,7 +205,7 @@ it('can assign registered timestamp values', function () {
 
 it('can set a default timestamp', function () {
     ModelMetaKey::firstWhere('key', 'dummy_models:registered_timestamp')->update([
-        'default_value' => \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', '2010-02-01 13:35:20', 'UTC')
+        'default_value' => \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', '2010-02-01 13:35:20', 'UTC'),
     ]);
 
     \SmurfWorks\ModelMeta\ModelMeta::clearSchemaCache(DummyModel::class);

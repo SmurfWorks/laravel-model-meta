@@ -58,7 +58,9 @@ class ModelMetaKey extends \Illuminate\Database\Eloquent\Model
     {
         return Attribute::make(
             function ($value) {
-                if ($value === null) return null;
+                if ($value === null) {
+                    return null;
+                }
                 $value = unserialize($value);
 
                 switch ($this->attributes['store_value_as']) {
@@ -77,7 +79,9 @@ class ModelMetaKey extends \Illuminate\Database\Eloquent\Model
             },
             function ($value) {
 
-                if ($value === '' || $value === null) return null;
+                if ($value === '' || $value === null) {
+                    return null;
+                }
 
                 switch ($this->attributes['store_value_as']) {
                     case ModelMeta::TYPE_STRING:
@@ -111,7 +115,7 @@ class ModelMetaKey extends \Illuminate\Database\Eloquent\Model
                         if ($value instanceof \Carbon\Carbon) {
                             $value = [
                                 'tz' => $value->getTimezone(),
-                                'value' => (string) $value
+                                'value' => (string) $value,
                             ];
 
                             break;
