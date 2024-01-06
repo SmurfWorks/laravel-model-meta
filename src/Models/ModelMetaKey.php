@@ -62,6 +62,16 @@ class ModelMetaKey extends \Illuminate\Database\Eloquent\Model
                 $value = unserialize($value);
 
                 switch ($this->attributes['store_value_as']) {
+
+                    case ModelMeta::TYPE_DATE:
+                        if (is_string($value)) {
+                            $value = \Carbon\Carbon::createFromFormat('Y-m-d', $value);
+                            break;
+                        }
+
+                        $value = $this->asDateTime($value);
+                        break;
+
                     case ModelMeta::TYPE_DATETIME:
                     case ModelMeta::TYPE_TIMESTAMP:
                         if (is_array($value)) {
@@ -99,7 +109,12 @@ class ModelMetaKey extends \Illuminate\Database\Eloquent\Model
                         break;
 
                     case ModelMeta::TYPE_DATE:
-                        $value = $this->asDate($value);
+                        if ($value instanceof \Carbon\Carbon) {
+                            $value = $value->format('Y-m-d');
+                            break;
+                        }
+
+                        $value = (string) $value;
                         break;
 
                     case ModelMeta::TYPE_TIME:
