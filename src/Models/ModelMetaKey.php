@@ -140,7 +140,7 @@ class ModelMetaKey extends \Illuminate\Database\Eloquent\Model
                         break;
                 }
 
-                return ! is_null($value) ? serialize($value) : null;
+                return serialize($value);
             }
         );
     }
